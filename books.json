@@ -1,0 +1,35 @@
+[
+  {
+    "id": "1a2b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "isbn": "978-0-7432-7356-5",
+    "genre": "Fiction",
+    "publishedYear": 1925,
+    "description": "A classic American novel set in the Jazz Age, telling the story of Jay Gatsby's pursuit of the American Dream.",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "2b3c4d5e-6f7g-8h9i-0j1k-2l3m4n5o6p7q",
+    "title": "To Kill a Mockingbird",
+    "author": "Harper Lee",
+    "isbn": "978-0-06-112008-4",
+    "genre": "Fiction",
+    "publishedYear": 1960,
+    "description": "A gripping tale of racial injustice and childhood innocence in the American South.",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "3c4d5e6f-7g8h-9i0j-1k2l-3m4n5o6p7q8r",
+    "title": "1984",
+    "author": "George Orwell",
+    "isbn": "978-0-452-28423-4",
+    "genre": "Dystopian Fiction",
+    "publishedYear": 1949,
+    "description": "A dystopian social science fiction novel about totalitarian control and surveillance.",
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2024-01-01T00:00:00.000Z"
+  }
+] 
