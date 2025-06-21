@@ -42,6 +42,7 @@ function setupEventListeners() {
     // Refresh button
     refreshBtn.addEventListener('click', loadBooks);
     
+
     // Modal controls
     document.querySelector('.close').addEventListener('click', closeModal);
     document.querySelectorAll('.modal-close').forEach(btn => {
@@ -129,7 +130,7 @@ function displayBooks(books) {
     `).join('');
 }
 
-// Handle adding a new book
+// Handle adding a new book. This function is called when the user clicks the "Add Book" button.
 async function handleAddBook(e) {
     e.preventDefault();
     

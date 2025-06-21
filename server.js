@@ -14,13 +14,12 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-// Helper function to read books from JSON file
+
 async function readBooks() {
     try {
         const data = await fs.readFile(DATA_FILE, 'utf8');
         return JSON.parse(data);
     } catch (error) {
-        // If file doesn't exist or is empty, return empty array
         return [];
     }
 }
@@ -151,7 +150,7 @@ app.put('/api/books/:id', async (req, res) => {
         if (!title || !author) {
             return res.status(400).json({
                 success: false,
-                message: 'Title and author are required fields'
+                message: 'Title and author are required fields, please fill in the required fields'
             });
         }
         
