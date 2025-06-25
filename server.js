@@ -7,14 +7,14 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_FILE = path.join(__dirname, 'books.json');
+const DATA_FILE = path.join(__dirname, process.env.NODE_ENV === 'test' ? 'test-books.json' : 'books.json');
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
-
+// Helper function to read books from JSON file
 async function readBooks() {
     try {
         const data = await fs.readFile(DATA_FILE, 'utf8');
@@ -252,9 +252,14 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`🚀 Book API Server is running on http://localhost:${PORT}`);
-    console.log(`📚 Frontend available at: http://localhost:${PORT}`);
-    console.log(`🔗 API endpoints available at: http://localhost:${PORT}/api/books`);
-}); 
+// Export the app for testing
+module.exports = { app, readBooks, writeBooks };
+
+// Start server only if this file is run directly
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`🚀 Book API Server is running on http://localhost:${PORT}`);
+        console.log(`📚 Frontend available at: http://localhost:${PORT}`);
+        console.log(`🔗 API endpoints available at: http://localhost:${PORT}/api/books`);
+    });
+} 
