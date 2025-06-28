@@ -31,5 +31,27 @@
     "description": "A dystopian social science fiction novel about totalitarian control and surveillance.",
     "createdAt": "2024-01-01T00:00:00.000Z",
     "updatedAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "7bf82c74-0523-4904-ac27-d5f1ba30b658",
+    "title": "Test Book",
+    "author": "Test Author",
+    "isbn": null,
+    "genre": "Test",
+    "publishedYear": null,
+    "description": "",
+    "createdAt": "2025-06-28T04:34:07.683Z",
+    "updatedAt": "2025-06-28T04:34:07.683Z"
+  },
+  {
+    "id": "6f23f938-7d5e-4b23-9942-a54a6d91a089",
+    "title": "Test Book",
+    "author": "Test Author",
+    "isbn": null,
+    "genre": "Test",
+    "publishedYear": null,
+    "description": "",
+    "createdAt": "2025-06-28T04:34:13.813Z",
+    "updatedAt": "2025-06-28T04:34:13.813Z"
   }
-] 
+]

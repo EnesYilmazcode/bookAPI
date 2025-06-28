@@ -1,0 +1,426 @@
+openapi: 3.0.3
+info:
+  title: Book API
+  description: A RESTful API for managing books with CRUD operations
+  version: 1.0.0
+  contact:
+    name: API Support
+    email: support@bookapi.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Development server
+  - url: https://your-production-url.com
+    description: Production server
+
+paths:
+  /api/books:
+    get:
+      summary: Get all books
+      description: Retrieve a list of all books in the database
+      tags:
+        - Books
+      responses:
+        '200':
+          description: Successfully retrieved all books
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    description: Number of books returned
+                    example: 5
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      summary: Create a new book
+      description: Add a new book to the database
+      tags:
+        - Books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '201':
+          description: Book created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Book created successfully"
+                  data:
+                    $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missing_required_fields:
+                  summary: Missing required fields
+                  value:
+                    success: false
+                    message: "Title and author are required fields"
+                duplicate_isbn:
+                  summary: Duplicate ISBN
+                  value:
+                    success: false
+                    message: "Book with this ISBN already exists"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/books/{id}:
+    get:
+      summary: Get a specific book
+      description: Retrieve a single book by its ID
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the book
+          schema:
+            type: string
+            format: uuid
+            example: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Successfully retrieved the book
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Book not found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    put:
+      summary: Update a book
+      description: Update an existing book by its ID
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the book
+          schema:
+            type: string
+            format: uuid
+            example: "550e8400-e29b-41d4-a716-446655440000"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookInput'
+      responses:
+        '200':
+          description: Book updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Book updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Book'
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missing_required_fields:
+                  summary: Missing required fields
+                  value:
+                    success: false
+                    message: "Title and author are required fields, please fill in the required fields"
+                duplicate_isbn:
+                  summary: Duplicate ISBN
+                  value:
+                    success: false
+                    message: "Book with this ISBN already exists"
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Book not found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    delete:
+      summary: Delete a book
+      description: Remove a book from the database by its ID
+      tags:
+        - Books
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique identifier of the book
+          schema:
+            type: string
+            format: uuid
+            example: "550e8400-e29b-41d4-a716-446655440000"
+      responses:
+        '200':
+          description: Book deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Book deleted successfully"
+                  data:
+                    $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                message: "Book not found"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/books/search/{query}:
+    get:
+      summary: Search books
+      description: Search for books by title, author, or genre
+      tags:
+        - Books
+      parameters:
+        - name: query
+          in: path
+          required: true
+          description: Search query to match against book title, author, or genre
+          schema:
+            type: string
+            example: "tolkien"
+      responses:
+        '200':
+          description: Search completed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  count:
+                    type: integer
+                    description: Number of books found
+                    example: 3
+                  query:
+                    type: string
+                    description: The search query that was used
+                    example: "tolkien"
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Book:
+      type: object
+      description: A book object with all its properties
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the book
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        title:
+          type: string
+          description: The title of the book
+          example: "The Lord of the Rings"
+        author:
+          type: string
+          description: The author of the book
+          example: "J.R.R. Tolkien"
+        isbn:
+          type: string
+          nullable: true
+          description: The International Standard Book Number
+          example: "978-0-547-92822-7"
+        genre:
+          type: string
+          description: The genre of the book
+          example: "Fantasy"
+          default: "Unknown"
+        publishedYear:
+          type: integer
+          nullable: true
+          description: The year the book was published
+          example: 1954
+          minimum: 1
+          maximum: 2024
+        description:
+          type: string
+          description: A description or summary of the book
+          example: "An epic fantasy novel about the quest to destroy the One Ring"
+        createdAt:
+          type: string
+          format: date-time
+          description: Timestamp when the book was added to the database
+          example: "2023-01-01T12:00:00.000Z"
+        updatedAt:
+          type: string
+          format: date-time
+          description: Timestamp when the book was last updated
+          example: "2023-01-01T12:00:00.000Z"
+      required:
+        - id
+        - title
+        - author
+        - genre
+        - createdAt
+        - updatedAt
+
+    BookInput:
+      type: object
+      description: Input schema for creating or updating a book
+      properties:
+        title:
+          type: string
+          description: The title of the book
+          example: "The Lord of the Rings"
+          minLength: 1
+          maxLength: 255
+        author:
+          type: string
+          description: The author of the book
+          example: "J.R.R. Tolkien"
+          minLength: 1
+          maxLength: 255
+        isbn:
+          type: string
+          description: The International Standard Book Number
+          example: "978-0-547-92822-7"
+          pattern: '^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$'
+        genre:
+          type: string
+          description: The genre of the book
+          example: "Fantasy"
+          maxLength: 100
+        publishedYear:
+          type: integer
+          description: The year the book was published
+          example: 1954
+          minimum: 1
+          maximum: 2024
+        description:
+          type: string
+          description: A description or summary of the book
+          example: "An epic fantasy novel about the quest to destroy the One Ring"
+          maxLength: 1000
+      required:
+        - title
+        - author
+
+    ErrorResponse:
+      type: object
+      description: Standard error response format
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Book not found"
+        error:
+          type: string
+          description: Technical error details
+          example: "Database connection failed"
+      required:
+        - success
+        - message
+
+tags:
+  - name: Books
+    description: Operations related to book management 
