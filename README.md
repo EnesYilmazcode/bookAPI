@@ -23,10 +23,14 @@ A modern Node.js/Express REST API for managing books with comprehensive Keploy A
 
 ## 📊 Test Results
 
-<!-- TEST_SCREENSHOT_PLACEHOLDER -->
-> **Note**: Test screenshots will be displayed here after running the GitHub Actions workflow. The workflow automatically captures and validates all API endpoints with Keploy.
+![Keploy API Test Results](./assets/keploy-test-results.png)
 
-![Test Results Placeholder](https://via.placeholder.com/800x400/f0f0f0/666666?text=Test+Results+Will+Appear+Here)
+✅ **All tests passed successfully!** The GitHub Actions workflow completed with:
+- **keploy-test (18.x)** - ✅ Completed  
+- **keploy-test (20.x)** - ✅ Completed
+- **api-health-check** - ✅ Completed (25s)
+- **integration-test** - ✅ Completed (11s)
+- **Test artifacts generated** for both Node.js versions
 
 **Latest Test Status**: [![Keploy API Tests](https://github.com/galax/bookAPI/actions/workflows/keploy-api-tests.yml/badge.svg)](.github/workflows/keploy-api-tests.yml)
 
